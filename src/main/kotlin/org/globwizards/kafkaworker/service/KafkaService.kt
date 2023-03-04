@@ -4,7 +4,9 @@ import org.apache.kafka.clients.consumer.Consumer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.kafka.core.KafkaOperations
 import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.support.SendResult
 import org.springframework.stereotype.Service
+import java.util.concurrent.CompletableFuture
 
 @Service
 class KafkaService(
@@ -13,8 +15,8 @@ class KafkaService(
     private val itemsConsumer: Consumer<String, String>
 ) {
 
-    fun send(message: String) {
-        kafkaTemplate.send(topic, message)
+    fun send(message: String): CompletableFuture<SendResult<String, String>> {
+        return kafkaTemplate.send(topic, message)
     }
 
     fun receive(): List<String> {

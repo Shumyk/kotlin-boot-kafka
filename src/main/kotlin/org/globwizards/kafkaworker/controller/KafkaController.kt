@@ -22,7 +22,7 @@ class KafkaController(
     fun produceMessage(@RequestBody message: String): ResponseEntity<Any> {
         return try {
             log.info("Received message to produce to Kafka: {}...", message.take(5))
-            kafkaService.send(message)
+            kafkaService.send(message).get()
             return ResponseEntity.ok().build()
         } catch (e: Exception) {
             log.error("Exception has occurred when sending message to Kafka: {}", e.message, e)

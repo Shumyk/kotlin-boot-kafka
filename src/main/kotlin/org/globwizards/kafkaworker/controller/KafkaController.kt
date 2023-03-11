@@ -23,7 +23,7 @@ class KafkaController(
         return try {
             log.info("Received message to produce to Kafka: {}...", message.take(5))
             kafkaService.send(message).get()
-            return ResponseEntity.ok().build()
+            ResponseEntity.ok().build()
         } catch (e: Exception) {
             log.error("Exception has occurred when sending message to Kafka: {}", e.message, e)
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message: " + e.message)

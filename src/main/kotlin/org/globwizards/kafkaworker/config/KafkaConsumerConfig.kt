@@ -15,7 +15,6 @@ private const val REPLICAS = 1
 @Configuration
 class KafkaConsumerConfig(
     @Value("\${kafka.topics}") val topic: String,
-    @Value("\${spring.kafka.bootstrap-servers}") val servers: String,
 ) {
 
     @Bean

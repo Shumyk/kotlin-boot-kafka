@@ -24,12 +24,27 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
+  documentDB:
+    image: mongo
+    container_name: document_db
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'robot'
+      MONGO_INITDB_ROOT_PASSWORD: 'tobor'
+      MONGO_INITDB_DATABASE: 'messages'
+
   kafka-service:
     image: globwizards/kotlin-kafka-service
     container_name: kafka-service
     depends_on:
       - kafka
+      - documentDB
     environment:
       KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
+      DB_HOST: 'documentDB'
+      DB_USER: 'robot'
+      DB_PSWD: 'tobor'
+      DB_DATABASE: 'messages'
     ports:
       - '8080:8080'

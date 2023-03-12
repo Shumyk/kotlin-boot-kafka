@@ -4,12 +4,8 @@ kafka:
 spring:
   data:
     mongodb:
-#      host: ${DB_HOST:localhost}
-#      port: ${DB_PORT:27017}
-#      username: ${DB_USER:robot}
-#      password: ${DB_PSWD:tobor}
       database: ${DB_DATABASE:messages}
-      uri: mongodb://${DB_USER:robot}:${DB_PSWD:tobor}@${DB_HOST:localhost}:${DB_PORT:27017}/?authSource=admin&authMechanism=SCRAM-SHA-1
+      uri: mongodb://robot:tobor@documentDB:27017/?authSource=admin&authMechanism=SCRAM-SHA-1
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}

@@ -25,14 +25,25 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   documentDB:
-    image: mongo
+    image: mongo:4
     container_name: document_db
     ports:
       - '27017:27017'
+    volumes:
+      - mongodb4_data:/data/db
+      - ./keyfile:/opt/keyfile/
     environment:
+      PUID: 1000
+      PGID: 1000
       MONGO_INITDB_ROOT_USERNAME: 'robot'
       MONGO_INITDB_ROOT_PASSWORD: 'tobor'
       MONGO_INITDB_DATABASE: 'messages'
+      MONGO_REPLICA_SET_NAME: 'rs0'
+    command: '--bind_ip_all --keyFile /opt/keyfile --replSet rs0'
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
 
   kafka-service:
     image: globwizards/kotlin-kafka-service
@@ -48,3 +59,6 @@ services:
       DB_DATABASE: 'messages'
     ports:
       - '8080:8080'
+
+volumes:
+  mongodb4_data:

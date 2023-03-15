@@ -1,0 +1,32 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: kotlin-kafka-mongo-cluster
+  region: eu-west-2
+
+managedNodeGroups:
+  - name: ng-1-workers
+    labels: { role: workers }
+    instanceType: t2.small
+    desiredCapacity: 4
+    volumeSize: 80
+    privateNetworking: true
+  - name: ng-2-builders
+    labels: { role: builders }
+    instanceType: t2.small
+    desiredCapacity: 2
+    volumeSize: 100
+    privateNetworking: true
+
+vpc:
+  id: "vpc-0fc79cb826d997d3c"
+  securityGroup: "sg-0a66b61f559659bcd"    # this is the ControlPlaneSecurityGroup
+  subnets:
+    private:
+      private1:
+        id: "subnet-04f8ab01557ee1a61"
+      private2:
+        id: "subnet-03df039a314b9ccf0"
+      private3:
+        id: "subnet-0df9058ecd99f0bdd"

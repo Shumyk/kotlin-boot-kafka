@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-kafka-connect-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: mongo-kafka-connect-deployment
+  template:
+    metadata:
+      labels:
+        type: mongo-kafka-connect-deployment
+    spec:
+      containers:
+        - name: mongo-kafka-connect
+          image: shumyk/mongo-kafka-connect
+          ports:
+            - containerPort: 8083
+          env:
+            - name: DB_HOST
+              value: mongodb-service
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: CONNECT_GROUP_ID
+              value: documentdb-kafka-connect-group1
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: documentdb-kafka-connect-group-config-storage1
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: documentdb-kafka-connect-group-offset-storage1
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: documentdb-kafka-connect-group-status-storage1
+            - name: CONNECT_KEY_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_VALUE_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              value: mongo-kafka-connect-service:8083
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "1"

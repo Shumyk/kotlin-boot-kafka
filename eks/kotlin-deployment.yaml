@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kotlin-deployment
+  labels:
+    type: kotlin-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: kotlin-deployment
+  template:
+    metadata:
+      labels:
+        type: kotlin-deployment
+    spec:
+      containers:
+        - name: kotlin-deployment
+          image: shumyk/kotlin-km-service
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: MONGO_HOST
+#              value: kotlin-kafka-mongo-cluster.cluster-chakvh9ud8we.eu-west-2.docdb.amazonaws.com
+              value: mongodb-service
+            - name: MONGO_USER
+              value: shumyk
+            - name: MONGO_PSWD
+              value: password
+            - name: DB_DATABASE
+              value: messages

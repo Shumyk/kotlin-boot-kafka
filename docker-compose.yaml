@@ -62,12 +62,9 @@ services:
     container_name: kafka-service
     depends_on:
       - kafka
-      - documentDB
+#      - documentDB
     environment:
       KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
-      DB_HOST: 'documentDB'
-      DB_USER: 'robot'
-      DB_PSWD: 'tobor'
       DB_DATABASE: 'messages'
     ports:
       - '8080:8080'

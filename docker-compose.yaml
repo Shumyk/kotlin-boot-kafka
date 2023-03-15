@@ -25,25 +25,37 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   documentDB:
-    image: mongo:4
-    container_name: document_db
-    ports:
-      - '27017:27017'
+    image : davybello/mongo-replica-set:5.0.12
+    container_name: documentdb
     volumes:
-      - mongodb4_data:/data/db
-      - ./keyfile:/opt/keyfile/
+      - "./docker/.data/mongo1:/var/lib/mongo1"
+      - "./docker/.data/mongo2:/var/lib/mongo2"
+      - "./docker/.data/mongo3:/var/lib/mongo3"
+    ports:
+      - 27017:27017
+      - 27018:27018
+      - 27019:27019
+
+  documentdb-kafka-connect:
+    image: globwizards/documentdb-messages-kafka-items-connect
+    ports:
+      - '8083:8083'
+    depends_on:
+      - kafka
+      - documentDB
     environment:
-      PUID: 1000
-      PGID: 1000
-      MONGO_INITDB_ROOT_USERNAME: 'robot'
-      MONGO_INITDB_ROOT_PASSWORD: 'tobor'
-      MONGO_INITDB_DATABASE: 'messages'
-      MONGO_REPLICA_SET_NAME: 'rs0'
-    command: '--bind_ip_all --keyFile /opt/keyfile --replSet rs0'
-    healthcheck:
-      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
-      interval: 10s
-      start_period: 30s
+      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_GROUP_ID: documentdb-kafka-connect-group
+      CONNECT_CONFIG_STORAGE_TOPIC: documentdb-kafka-connect-group-config-storage
+      CONNECT_OFFSET_STORAGE_TOPIC: documentdb-kafka-connect-group-offset-storage
+      CONNECT_STATUS_STORAGE_TOPIC: documentdb-kafka-connect-group-status-storage
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_REST_ADVERTISED_HOST_NAME: localhost:8083
+
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
 
   kafka-service:
     image: globwizards/kotlin-kafka-service

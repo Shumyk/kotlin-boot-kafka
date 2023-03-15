@@ -1,0 +1,18 @@
+{
+  "name": "document-source-connector",
+  "config": {
+    "connector.class": "com.mongodb.kafka.connect.MongoSourceConnector",
+    "tasks.max": "1",
+
+    "connection.uri": "mongodb://${DB_HOST}:${DB_PORT}",
+    "database": "messages",
+    "collection": "messages",
+
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+
+    "topic.namespace.map": "{\"messages.messages\": \"items\"}",
+    "startup.mode": "copy_existing",
+    "publish.full.document.only": "true"
+  }
+}

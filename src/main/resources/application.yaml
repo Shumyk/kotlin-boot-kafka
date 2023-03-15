@@ -5,7 +5,7 @@ spring:
   data:
     mongodb:
       database: ${DB_DATABASE:messages}
-      uri: mongodb://robot:tobor@documentDB:27017/?authSource=admin&authMechanism=SCRAM-SHA-1
+      uri: mongodb://documentDB:27017
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}

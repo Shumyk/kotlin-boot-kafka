@@ -18,18 +18,25 @@ spec:
           ports:
             - containerPort: 8083
           env:
+            - name: DB_USER
+              value: shumyk
+            - name: DB_PSWD
+              value: password
             - name: DB_HOST
-              value: mongodb-service
+              value: kotlin-kafka-mongo-cluster.cluster-chakvh9ud8we.eu-west-2.docdb.amazonaws.com
+
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: kafka-service:9092
+            - name: KAFKA_OPTS
+              value: " -Djavax.net.ssl.trustStore=/certs/rds-truststore.jks -Djavax.net.ssl.trustStorePassword=trustme"
             - name: CONNECT_GROUP_ID
-              value: documentdb-kafka-connect-group1
+              value: documentdb-kafka-connect-group
             - name: CONNECT_CONFIG_STORAGE_TOPIC
-              value: documentdb-kafka-connect-group-config-storage1
+              value: documentdb-kafka-connect-group-config-storage
             - name: CONNECT_OFFSET_STORAGE_TOPIC
-              value: documentdb-kafka-connect-group-offset-storage1
+              value: documentdb-kafka-connect-group-offset-storage
             - name: CONNECT_STATUS_STORAGE_TOPIC
-              value: documentdb-kafka-connect-group-status-storage1
+              value: documentdb-kafka-connect-group-status-storage
             - name: CONNECT_KEY_CONVERTER
               value: org.apache.kafka.connect.json.JsonConverter
             - name: CONNECT_VALUE_CONVERTER

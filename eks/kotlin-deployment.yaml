@@ -23,8 +23,7 @@ spec:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: kafka-service:9092
             - name: MONGO_HOST
-#              value: kotlin-kafka-mongo-cluster.cluster-chakvh9ud8we.eu-west-2.docdb.amazonaws.com
-              value: mongodb-service
+              value: kotlin-kafka-mongo-cluster.cluster-chakvh9ud8we.eu-west-2.docdb.amazonaws.com
             - name: MONGO_USER
               value: shumyk
             - name: MONGO_PSWD

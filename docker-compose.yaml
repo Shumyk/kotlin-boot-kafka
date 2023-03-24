@@ -37,13 +37,15 @@ services:
       - 27019:27019
 
   documentdb-kafka-connect:
-    image: globwizards/documentdb-messages-kafka-items-connect
+    image: shumyk/mongo-kafka-connect
     ports:
       - '8083:8083'
     depends_on:
       - kafka
       - documentDB
     environment:
+      PROFILE_ENV: local
+
       CONNECT_BOOTSTRAP_SERVERS: kafka:9092
       CONNECT_GROUP_ID: documentdb-kafka-connect-group
       CONNECT_CONFIG_STORAGE_TOPIC: documentdb-kafka-connect-group-config-storage
@@ -58,14 +60,14 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
 
   kafka-service:
-    image: globwizards/kotlin-kafka-service
+    image: shumyk/kotlin-km-service
     container_name: kafka-service
     depends_on:
       - kafka
-#      - documentDB
+      - documentDB
     environment:
       KAFKA_BOOTSTRAP_SERVERS: 'kafka:9092'
-      DB_DATABASE: 'messages'
+      spring.data.mongodb.uri: 'mongodb://documentDB:27017/messages'
     ports:
       - '8080:8080'
 

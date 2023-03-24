@@ -13,7 +13,8 @@ ENV DB_PORT 27017
 ENV DB_DATABASE messages
 
 COPY entrypoint.sh /etc/confluent/docker/entrypoint.sh
-COPY documentdb-kafka-connect.template.json /etc/kafka/documentdb-kafka-connect.template.json
+COPY documentdb-kafka-connect.template.json       /etc/kafka/documentdb-kafka-connect.template.json
+COPY documentdb-kafka-connect.template-local.json /etc/kafka/documentdb-kafka-connect.template-local.json
 
 USER root
 RUN yum update -y && yum install -y curl openssl perl

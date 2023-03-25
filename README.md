@@ -3,9 +3,9 @@
 This repository contains a Kotlin-based Spring Boot application, which demonstrates the use of Kafka for message streaming and simple interaction with Mongo-like databases. Below you'll find a brief description of the project, prerequisites, and instructions on how to run the project locally.
 
 ### Table of Contents
-[Description] (#description)
-[Prerequisites] (#prerequisites)
-[Running the Project Locally] (#running-the-project-locally)
+1. [Description](#description)
+2. [Prerequisites](#prerequisites)
+3. [Running the Project Locally](#running-the-project-locally)
 
 ### Description
 The Kotlin Boot Mongo-Kafka project is a Spring Boot application developed in Kotlin that showcases the integration of Kafka for message streaming and MongoDB. It consists of a producer and consumer that communicate via Kafka topics. As well as persistence layer for communicating with MongoDB.
